@@ -1,0 +1,21 @@
+sudo: required
+services: 
+  - docker
+
+before_install:
+  - docker build -t lbp102/react-test -f ./client/Dockerfile-dev ./client
+
+script:
+  - docker run lbp102/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t lbp102/multi-client ./client
+  - docker build -t lbp102/multi-nginx ./nginx
+  - docker build -t lbp102/multi-server ./server
+  - docker build -t lbp102/multi-worker ./worker
+  # Push to docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_id" --password-stdin
+  - docker push lbp102/multi-client
+  - docker push lbp102/multi-nginx
+  - docker push lbp102/multi-server
+  - docker push lbp102/multi-worker
