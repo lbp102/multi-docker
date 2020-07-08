@@ -14,7 +14,7 @@ after_success:
   - docker build -t lbp102/multi-server ./server
   - docker build -t lbp102/multi-worker ./worker
   # Push to docker hub
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_id" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push lbp102/multi-client
   - docker push lbp102/multi-nginx
   - docker push lbp102/multi-server
